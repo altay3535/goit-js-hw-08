@@ -1,10 +1,8 @@
 .gallery {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 360px);
     gap: 24px;
-    padding: 24px;
-    padding-left: 156px;
-    align-items: center;
+    justify-content: center;
 }
 
 .gallery img {
