@@ -1,5 +1,3 @@
-console.log(basicLightbox);
-
 
 const images = [
   {
@@ -71,8 +69,7 @@ console.log(basicLightbox);
 const gallery = document.querySelector(".gallery");
 
 const markup = images
-  .map((img) => {
-    return `
+  .map((img) => `
 <li class="gallery-item">
   <a class="gallery-link" href="${img.original}">
     <img
@@ -83,32 +80,31 @@ const markup = images
     />
   </a>
 </li>
-`;
-  })
+`)
   .join("");
 
 gallery.insertAdjacentHTML("beforeend", markup);
 
-gallery.addEventListener("click", onGalleryClick);
 
-function onGalleryClick(event) {
+let currentInstance = null;
+
+gallery.addEventListener("click", (event) => {
   event.preventDefault();
 
-  if (!event.target.classList.contains("gallery-image")) {
-    return;
-  }
+  if (!event.target.classList.contains("gallery-image")) return;
 
   const largeImage = event.target.dataset.source;
 
-  const instance = basicLightbox.create(`
+  currentInstance = basicLightbox.create(`
     <img src="${largeImage}" width="1112" height="640">
   `);
 
-  instance.show();
+  currentInstance.show();
+});
 
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-      instance.close();
-    }
-  });
-}
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && currentInstance) {
+    currentInstance.close();
+    currentInstance = null;
+  }
+});
